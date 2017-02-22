@@ -1,0 +1,9 @@
+*.log
+**/*.log
+.DS_Store
+**/.DS_Store
+.oldreadme.md
+
+node_modules
+coverage
+src/config.js
