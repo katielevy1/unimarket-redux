@@ -3,12 +3,12 @@ import { map } from 'lodash'
 import { LIST_PATH } from 'constants/paths'
 
 // Components
-import ProjectTile from '../components/ProjectTile/ProjectTile'
-import NewProjectTile from '../components/NewProjectTile/NewProjectTile'
-import NewProjectDialog from '../components/NewProjectDialog/NewProjectDialog'
+import PostTile from '../components/PostTile/PostTile'
+import NewPostTile from '../components/NewPostTile/NewPostTile'
+import NewPostDialog from '../components/NewPostDialog/NewPostDialog'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import classes from './ProjectsContainer.scss'
+import classes from './PostsContainer.scss'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -19,69 +19,69 @@ const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
 @firebase(
   ({ params, auth }) => ([
     {
-      path: 'projects',
+      path: 'posts',
       populates: [
         { child: 'owner', root: 'users' }
       ]
     }
-    // 'projects#populate=owner:users' // string equivalent
+    // 'posts#populate=owner:users' // string equivalent
   ])
 )
 @connect(
   ({ firebase }, { params }) => ({
-    projects: dataToJS(firebase, 'projects'),
+    posts: dataToJS(firebase, 'posts'),
     auth: pathToJS(firebase, 'auth')
   })
 )
-export default class Projects extends Component {
+export default class Posts extends Component {
   static contextTypes = {
     router: React.PropTypes.object.isRequired
   }
 
   state = {
-    newProjectModal: false,
-    addProjectModal: false
+    newPostModal: false,
+    addPostModal: false
   }
 
   static propTypes = {
     account: PropTypes.object,
-    projects: PropTypes.object,
+    posts: PropTypes.object,
     firebase: PropTypes.object,
     auth: PropTypes.object,
     children: PropTypes.object,
     params: PropTypes.object
   }
 
-  newSubmit = (newProject) => {
+  newSubmit = (newPost) => {
     const { auth, firebase: { push } } = this.props
     if (auth.uid) {
-      newProject.owner = auth.uid
+      newPost.owner = auth.uid
     }
-    push('projects', newProject)
-      .then(() => this.setState({ newProjectModal: false }))
+    push('posts', newPost)
+      .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
         // TODO: Show Snackbar
-        console.error('error creating new project', err)
+        console.error('error creating new post', err)
       })
   }
 
-  deleteProject = ({ name }) =>
-    this.props.firebase.remove(`projects/${name}`)
+  deletePost = ({ name }) =>
+    this.props.firebase.remove(`posts/${name}`)
 
-  toggleModal = (name, project) => {
+  toggleModal = (name, post) => {
     let newState = {}
     newState[`${name}Modal`] = !this.state[`${name}Modal`]
     this.setState(newState)
   }
 
   render () {
-    // Project Route is being loaded
+    // post Route is being loaded
     if (this.props.children) return this.props.children
 
-    const { projects } = this.props
-    const { newProjectModal } = this.state
+    const { posts } = this.props
+    const { newPostModal } = this.state
 
-    if (!isLoaded(projects)) {
+    if (!isLoaded(posts)) {
       return (
         <div className={classes.progress}>
           <CircularProgress />
@@ -92,26 +92,26 @@ export default class Projects extends Component {
     return (
       <div className={classes.container}>
         {
-          newProjectModal &&
-            <NewProjectDialog
-              open={newProjectModal}
+          newPostModal &&
+            <NewPostDialog
+              open={newPostModal}
               onSubmit={this.newSubmit}
-              onRequestClose={() => this.toggleModal('newProject')}
+              onRequestClose={() => this.toggleModal('newPost')}
             />
         }
         <div className={classes.tiles}>
-          <NewProjectTile
-            onClick={() => this.toggleModal('newProject')}
+          <NewPostTile
+            onClick={() => this.toggleModal('newPost')}
           />
           {
-            !isEmpty(projects) &&
-               map(projects, (project, key) => (
-                 <ProjectTile
-                   key={`${project.name}-Collab-${key}`}
-                   project={project}
+            !isEmpty(posts) &&
+               map(posts, (post, key) => (
+                 <PostTile
+                   key={`${post.name}-Collab-${key}`}
+                   post={post}
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
-                   onDelete={this.deleteProject}
+                   onDelete={this.deletePost}
                  />
               ))
           }

@@ -106,7 +106,7 @@ export default class Navbar extends Component {
     // Only apply styling if avatar is showing
     const menuStyle = auth ? avatarStyles.wrapper : {}
 
-    // Redirect to projects page if logged in
+    // Redirect to posts page if logged in
     const brandPath = auth ? `/${LIST_PATH}` : '/'
 
     return (

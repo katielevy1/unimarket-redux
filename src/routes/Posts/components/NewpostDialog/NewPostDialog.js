@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton'
 import { Field, reduxForm, submit } from 'redux-form'
 import TextField from 'components/TextField'
 
-import classes from './NewProjectDialog.scss'
+import classes from './NewPostDialog.scss'
 
-const formName = 'newProject'
+const formName = 'newPost'
 const validate = values => {
   const errors = {}
   if (!values.name) errors.name = 'Required'
@@ -16,7 +16,7 @@ const validate = values => {
   form: formName,
   validate
 })
-export default class NewProjectDialog extends Component {
+export default class NewPostDialog extends Component {
   static propTypes = {
     open: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired,
@@ -34,8 +34,8 @@ export default class NewProjectDialog extends Component {
         open: true
       })
       setTimeout(() => {
-        if (this.refs && this.refs.projectNameField) {
-          this.refs.projectNameField.focus()
+        if (this.refs && this.refs.postNameField) {
+          this.refs.postNameField.focus()
         }
       }, 500)
     }
@@ -74,7 +74,7 @@ export default class NewProjectDialog extends Component {
 
     return (
       <Dialog
-        title='New Project'
+        title='New Post'
         modal={false}
         actions={actions}
         open={open}
@@ -86,7 +86,7 @@ export default class NewProjectDialog extends Component {
               name='name'
               component={TextField}
               error={error || null}
-              label='Project Name'
+              label='Post Name'
             />
           </form>
         </div>

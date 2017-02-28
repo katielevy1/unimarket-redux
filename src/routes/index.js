@@ -3,7 +3,7 @@ import CoreLayout from '../layouts/CoreLayout/CoreLayout'
 import Home from './Home'
 import LoginRoute from './Login'
 import SignupRoute from './Signup'
-import ProjectsRoute from './Projects'
+import PostsRoute from './Posts'
 import AccountRoute from './Account'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -17,7 +17,7 @@ export const createRoutes = (store) => ({
     AccountRoute(store),
     LoginRoute(store),
     SignupRoute(store),
-    ProjectsRoute(store)
+    PostsRoute(store)
   ]
 })
 

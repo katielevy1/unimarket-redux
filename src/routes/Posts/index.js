@@ -9,23 +9,23 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const Projects = require('./containers/ProjectsContainer').default
+      const Posts = require('./containers/postsContainer').default
 
       /*  Return getComponent   */
-      cb(null, Projects)
+      cb(null, Posts)
 
     /* Webpack named bundle   */
-    }, 'Projects')
+    }, 'Posts')
   },
   getChildRoutes (partialNextState, cb) {
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const Project = require('./routes/Project').default
+      const Post = require('./routes/Post').default
 
       /*  Return getComponent   */
       cb(null, [
-        Project(store)
+        Post(store)
       ])
     })
   }

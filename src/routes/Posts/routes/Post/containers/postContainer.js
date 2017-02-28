@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import classes from './ProjectContainer.scss'
+import classes from './PostContainer.scss'
 import CircularProgress from 'material-ui/CircularProgress'
 
 // redux/firebase
@@ -11,30 +11,30 @@ const { isLoaded, dataToJS } = helpers
 @firebase(
   // Get paths from firebase
   ({ params }) => ([
-    `projects/${params.projectname}`
+    `posts/${params.postname}`
   ])
 )
 @connect(
   // Map state to props
   ({ firebase }, { params }) => ({
-    project: dataToJS(firebase, `projects/${params.projectname}`)
+    post: dataToJS(firebase, `posts/${params.postname}`)
   })
 )
-export default class Project extends Component {
+export default class Post extends Component {
   static contextTypes = {
     router: React.PropTypes.object.isRequired
   }
 
   static propTypes = {
-    project: PropTypes.object,
+    post: PropTypes.object,
     params: PropTypes.object.isRequired,
     children: PropTypes.object
   }
 
   render () {
-    const { project } = this.props
+    const { post } = this.props
 
-    if (!isLoaded(project)) {
+    if (!isLoaded(post)) {
       return (
         <div className={classes['progress']}>
           <CircularProgress />
@@ -44,8 +44,8 @@ export default class Project extends Component {
 
     return (
       <div className={classes['container']}>
-        <h2>Project Container</h2>
-        <pre>{JSON.stringify(project, null, 2)}</pre>
+        <h2>Post Container</h2>
+        <pre>{JSON.stringify(post, null, 2)}</pre>
       </div>
     )
   }
