@@ -5,16 +5,19 @@ import { isObject } from 'lodash'
 import classes from './PostTile.scss'
 
 export const PostTile = ({ post, onSelect }) => (
-  <Paper key={`Post-${post.name}`} className={classes['container']}>
+  <Paper key={`Post-${post.postKey}`} className={classes['container']}>
     <div className={classes['top']}>
       <span className={classes['name']} onClick={() => onSelect(post)}>
-        {post.name}
+        {post.title}
       </span>
     </div>
+    <span>
+      {post.description}
+    </span>
     <span className={classes['owner']}>
-      {
-        isObject(post.owner)
-          ? post.owner.displayName
+      By: {
+        isObject(post.posterID)
+          ? post.posterID
           : post.owner || 'No Owner'
       }
     </span>
