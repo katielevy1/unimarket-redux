@@ -57,10 +57,11 @@ export default class Posts extends Component {
     if (auth.uid) {
       newPost.posterID = auth.uid
     }
-    if (true) {
-      newPost.category = " "
-      newPost.flagged = 0
-    }
+    newPost.category = ''
+    newPost.flagged = 0
+    newPost.schoolId = ''
+    newPost.time = parseInt(new Date().getTime())
+    newPost.postKey = ''
     push('posts', newPost)
       .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
