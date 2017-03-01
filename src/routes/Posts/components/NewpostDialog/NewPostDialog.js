@@ -83,10 +83,16 @@ export default class NewPostDialog extends Component {
         <div className={classes['inputs']}>
           <form onSubmit={handleSubmit}>
             <Field
-              name='name'
+              name='title'
               component={TextField}
               error={error || null}
-              label='Post Name'
+              label='Post Title'
+            />
+            <Field
+              name='description'
+              component={TextField}
+              error={error || null}
+              label='Post Description'
             />
           </form>
         </div>

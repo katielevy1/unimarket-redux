@@ -55,7 +55,11 @@ export default class Posts extends Component {
   newSubmit = (newPost) => {
     const { auth, firebase: { push } } = this.props
     if (auth.uid) {
-      newPost.owner = auth.uid
+      newPost.posterID = auth.uid
+    }
+    if (true) {
+      newPost.category = " "
+      newPost.flagged = 0
     }
     push('posts', newPost)
       .then(() => this.setState({ newPostModal: false }))
@@ -107,7 +111,7 @@ export default class Posts extends Component {
             !isEmpty(posts) &&
                map(posts, (post, key) => (
                  <PostTile
-                   key={`${post.name}-Collab-${key}`}
+                   key={`${post.postkey}-Collab-${key}`}
                    post={post}
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
