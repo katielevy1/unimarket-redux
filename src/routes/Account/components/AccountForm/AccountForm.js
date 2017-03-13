@@ -26,15 +26,6 @@ export const AccountForm = ({ account, handleSubmit, submitting }) => (
         label='Email'
       />
     </div>
-    <div>
-      <h4>Linked Accounts</h4>
-      {
-        account && account.providerData &&
-          <ProviderDataForm
-            providerData={account.providerData}
-          />
-      }
-    </div>
   </div>
 )
 
