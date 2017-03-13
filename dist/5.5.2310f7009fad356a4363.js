@@ -1,0 +1,1 @@
+webpackJsonp([5],{380:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default=function(e){return{path:":postname",getComponent:function(e,n){t.e(7,function(e){var u=t(379).default;n(null,u)})}}}}});
