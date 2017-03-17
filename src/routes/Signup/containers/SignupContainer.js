@@ -6,7 +6,7 @@ import GoogleButton from 'react-google-button'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 import Snackbar from 'material-ui/Snackbar'
-import { LIST_PATH } from 'constants/paths'
+import { LOGIN_PATH } from 'constants/paths'
 import SignupForm from '../components/SignupForm/SignupForm'
 
 import classes from './SignupContainer.scss'
@@ -50,13 +50,13 @@ export default class Signup extends Component {
       snackCanOpen: true,
       isLoading: true
     })
-    const { createUser, login } = this.props.firebase
+    const { createUser } = this.props.firebase
     createUser(creds, { email: creds.email, username: creds.username })
-    .then(() => {
-      login(creds)
+    .then((user) => {
+      this.props.firebase.auth().currentUser.sendEmailVerification()
     })
     .then(() =>
-      this.context.router.push(LIST_PATH)
+      this.context.router.push(LOGIN_PATH)
     )
   }
 
