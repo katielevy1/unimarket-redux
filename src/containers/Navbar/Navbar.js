@@ -82,8 +82,11 @@ export default class Navbar extends Component {
         </Link>
       </div>
     )
+    const verified = this.props.firebase.auth().getCurrentUser ? (
+      this.props.firebase.auth().getCurrentUser.emailVerified
+    ) : false
 
-    const rightMenu = auth ? (
+    const rightMenu = verified ? (
       <IconMenu
         iconButtonElement={iconButton}
         targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}

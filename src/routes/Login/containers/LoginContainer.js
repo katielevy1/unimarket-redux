@@ -47,12 +47,17 @@ export default class Login extends Component {
       snackCanOpen: true,
       isLoading: true
     })
-
     this.props.firebase
       .login(loginData)
-      .then((account) =>
-        this.context.router.push(LIST_PATH)
-      )
+      .then((user) => {
+        if (user) {
+          if (!user.emailVerified) {
+            alert('user is not verified')
+          } else {
+            this.context.router.push(LIST_PATH)
+          }
+        }
+      })
   }
 
   render () {
