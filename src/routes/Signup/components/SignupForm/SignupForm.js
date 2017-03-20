@@ -10,7 +10,12 @@ import TextField from '../../../../components/TextField'
 
 const validate = values => {
   const errors = {}
-  if (!values.email) errors.email = 'Required'
+  var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$/
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!re.test(values.email)) {
+    errors.email = 'Invalid email'
+  }
   if (!values.password) errors.password = 'Required'
   return errors
 }
