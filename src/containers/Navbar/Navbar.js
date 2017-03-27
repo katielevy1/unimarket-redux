@@ -107,10 +107,10 @@ export default class Navbar extends Component {
     ) : mainMenu
 
     // Only apply styling if avatar is showing
-    const menuStyle = auth ? avatarStyles.wrapper : {}
+    const menuStyle = verified ? avatarStyles.wrapper : {}
 
     // Redirect to posts page if logged in
-    const brandPath = auth ? `/${LIST_PATH}` : '/'
+    const brandPath = verified ? `/${LIST_PATH}` : '/'
 
     return (
       <AppBar

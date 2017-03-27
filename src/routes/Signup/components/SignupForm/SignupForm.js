@@ -24,7 +24,10 @@ const SignupForm = ({ handleSubmit, submitting }) => {
   return (
     <form className={classes.container} onSubmit={handleSubmit}>
       <div>
-        <Field name='username' component={TextField} label='Username' />
+        <Field name='firstName' component={TextField} label='First Name' />
+      </div>
+      <div>
+        <Field name='lastName' component={TextField} label='Last Name' />
       </div>
       <div>
         <Field name='email' component={TextField} label='Email' />

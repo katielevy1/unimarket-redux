@@ -21,7 +21,8 @@ const { isLoaded, isEmpty, pathToJS } = helpers
   // Map state to props
   ({firebase}) => ({
     authError: pathToJS(firebase, 'authError'),
-    account: pathToJS(firebase, 'profile')
+    account: pathToJS(firebase, 'profile'),
+    auth: pathToJS(firebase, 'auth')
   })
 )
 
@@ -34,7 +35,8 @@ export default class Login extends Component {
     account: PropTypes.object,
     firebase: PropTypes.object,
     authError: PropTypes.object,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    auth: PropTypes.object
   }
 
   state = {
@@ -47,12 +49,17 @@ export default class Login extends Component {
       snackCanOpen: true,
       isLoading: true
     })
+    const { auth } = this.props
     this.props.firebase
       .login(loginData)
       .then((user) => {
         if (user) {
-          if (!user.emailVerified) {
-            alert('user is not verified')
+          console.dir(user)
+          console.log(auth.uid.emailVerified)
+          console.log(user.emailVerified)
+          const curUser = this.props.firebase.auth().currentUser
+          if (!curUser.emailVerified) {
+            alert('User is not verified')
           } else {
             this.context.router.push(LIST_PATH)
           }

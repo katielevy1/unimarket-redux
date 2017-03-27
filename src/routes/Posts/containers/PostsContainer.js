@@ -59,10 +59,14 @@ export default class Posts extends Component {
     }
     newPost.category = ''
     newPost.flagged = 0
-    newPost.schoolId = ''
+    newPost.schoolId = auth.uid.schoolId
     newPost.time = parseInt(new Date().getTime())
-    newPost.postKey = ''
-    push('posts', newPost)
+    var newPostKey = firebase.database().ref().child('posts').push().key
+    newPost.postKey = newPostKey
+    var updates = {}
+    updates['/posts/' + newPostKey] = newPost
+    updates['/users/' + auth.uid + '/Posts/' + newPostKey] = true
+    firebase.database().ref().update(updates)
       .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
         // TODO: Show Snackbar

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import GoogleButton from 'react-google-button'
 
 // Components
 import Paper from 'material-ui/Paper'
@@ -51,7 +50,8 @@ export default class Signup extends Component {
       isLoading: true
     })
     const { createUser } = this.props.firebase
-    createUser(creds, { email: creds.email, username: creds.username })
+    const schoolId = creds.email.split('@')[1]
+    createUser(creds, { Posts: {}, email: creds.email, firstName: creds.firstName, lastName: creds.lastName, provider: 'Firebase', schoolId: schoolId })
     .then((user) => {
       this.props.firebase.auth().currentUser.sendEmailVerification()
     })
