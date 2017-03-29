@@ -55,8 +55,7 @@ export default class Login extends Component {
       .then((user) => {
         if (user) {
           console.dir(user)
-          console.log(auth.uid.emailVerified)
-          console.log(user.emailVerified)
+          console.log(this.props.firebase.auth().currentUser)
           const curUser = this.props.firebase.auth().currentUser
           if (!curUser.emailVerified) {
             alert('User is not verified')
