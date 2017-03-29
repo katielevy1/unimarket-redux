@@ -53,20 +53,24 @@ export default class Posts extends Component {
   }
 
   newSubmit = (newPost) => {
-    const { auth, firebase: { push } } = this.props
+    const { auth, firebase: { push, update } } = this.props
     if (auth.uid) {
       newPost.posterID = auth.uid
     }
+    console.log('testing...')
     newPost.category = ''
     newPost.flagged = 0
     newPost.schoolId = auth.uid.schoolId
     newPost.time = parseInt(new Date().getTime())
-    var newPostKey = firebase.database().ref().child('posts').push().key
-    newPost.postKey = newPostKey
-    var updates = {}
-    updates['/posts/' + newPostKey] = newPost
-    updates['/users/' + auth.uid + '/Posts/' + newPostKey] = true
-    firebase.database().ref().update(updates)
+    var newPostKey = push(newPost)
+    console.log(newPostKey)
+    update('/posts/' + newPostKey, {postKey: newPostKey})
+
+    // firebase.database().ref().child('posts').push().key
+    // var updates = {}
+    // updates['/posts/' + newPostKey] = newPost
+    // updates['/users/' + auth.uid + '/Posts/' + newPostKey] = true
+    update('/users/' + auth.uid + '/Posts/', {newPostKey: true})
       .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
         // TODO: Show Snackbar
