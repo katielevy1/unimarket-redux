@@ -30,7 +30,8 @@ const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
 @connect(
   ({ firebase }, { params }) => ({
     posts: dataToJS(firebase, 'posts'),
-    auth: pathToJS(firebase, 'auth')
+    auth: pathToJS(firebase, 'auth'),
+    account: pathToJS(firebase, 'profile')
   })
 )
 export default class Posts extends Component {
@@ -53,29 +54,40 @@ export default class Posts extends Component {
   }
 
   newSubmit = (newPost) => {
-    const { auth, firebase: { push, update } } = this.props
+    const { auth, account, firebase: { push } } = this.props
     if (auth.uid) {
       newPost.posterID = auth.uid
+      newPost.schoolId = account.schoolId
+    } else {
+      newPost.posterID = ''
+      newPost.schoolId = ''
     }
     console.log('testing...')
     newPost.category = ''
     newPost.flagged = 0
-    newPost.schoolId = auth.uid.schoolId
     newPost.time = parseInt(new Date().getTime())
-    var newPostKey = push(newPost)
-    console.log(newPostKey)
-    update('/posts/' + newPostKey, {postKey: newPostKey})
+    newPost.hasImg = false
+    newPost.postKey = ''
+    // var newPostKey = firebase.database().ref().child('posts').push().key;
+    push('posts', newPost)
+    .then(() => this.setState({ newPostModal: false }))
+      .catch(err => {
+        // TODO: Show Snackbar
+        console.error('error creating new post', err)
+      })
+    //console.log(newPostKey)
+    // update('/posts/' + newPostKey, {postKey: newPostKey})
 
     // firebase.database().ref().child('posts').push().key
     // var updates = {}
     // updates['/posts/' + newPostKey] = newPost
     // updates['/users/' + auth.uid + '/Posts/' + newPostKey] = true
-    update('/users/' + auth.uid + '/Posts/', {newPostKey: true})
+    /*update('/users/' + auth.uid + '/Posts/', {newPostKey: true})
       .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
-      })
+      })*/
   }
 
   deletePost = ({ name }) =>
