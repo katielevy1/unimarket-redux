@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { map } from 'lodash'
+import { map, filter } from 'lodash'
 import { LIST_PATH } from 'constants/paths'
 
 // Components
@@ -99,12 +99,23 @@ export default class Posts extends Component {
     this.setState(newState)
   }
 
+  checkSchool = (p) => {
+    const { account } = this.props
+    if (p.schoolId) {
+      return p.schoolId === account.schoolId
+    } else {
+      return false
+    }
+  }
+
   render () {
+    const { account } = this.props
     // post Route is being loaded
     if (this.props.children) return this.props.children
 
     const { posts } = this.props
     const { newPostModal } = this.state
+    const displayPosts = filter(posts, {'schoolId': account.schoolId})
 
     if (!isLoaded(posts)) {
       return (
@@ -129,8 +140,8 @@ export default class Posts extends Component {
             onClick={() => this.toggleModal('newPost')}
           />
           {
-            !isEmpty(posts) &&
-               map(posts, (post, key) => (
+            !isEmpty(displayPosts) &&
+               map(displayPosts, (post, key) => (
                  <PostTile
                    key={`${post.postkey}-Collab-${key}`}
                    post={post}
