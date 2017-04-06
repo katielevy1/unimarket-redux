@@ -99,15 +99,6 @@ export default class Posts extends Component {
     this.setState(newState)
   }
 
-  checkSchool = (p) => {
-    const { account } = this.props
-    if (p.schoolId) {
-      return p.schoolId === account.schoolId
-    } else {
-      return false
-    }
-  }
-
   render () {
     const { account } = this.props
     // post Route is being loaded
@@ -115,9 +106,9 @@ export default class Posts extends Component {
 
     const { posts } = this.props
     const { newPostModal } = this.state
+    console.log(account)
     const displayPosts = filter(posts, {'schoolId': account.schoolId})
-
-    if (!isLoaded(posts)) {
+    if (!isLoaded(displayPosts)) {
       return (
         <div className={classes.progress}>
           <CircularProgress />

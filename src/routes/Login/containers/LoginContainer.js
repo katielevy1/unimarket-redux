@@ -49,21 +49,17 @@ export default class Login extends Component {
       snackCanOpen: true,
       isLoading: true
     })
-    const { auth } = this.props
     this.props.firebase
       .login(loginData)
-      .then((user) => {
-        if (user) {
-          console.dir(user)
-          console.log(this.props.firebase.auth().currentUser)
-          const curUser = this.props.firebase.auth().currentUser
-          if (!curUser.emailVerified) {
-            alert('User is not verified')
-          } else {
-            this.context.router.push(LIST_PATH)
-          }
-        }
-      })
+  }
+  componentWillUpdate () {
+    const { auth } = this.props
+    const verified = auth ? (
+      auth.emailVerified
+    ) : false
+    if (verified) {
+      this.context.router.push(LIST_PATH)
+    }
   }
 
   render () {
