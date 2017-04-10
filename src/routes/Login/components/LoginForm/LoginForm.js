@@ -40,19 +40,7 @@ export const LoginForm = ({ handleSubmit, submitting }) => (
         disabled={submitting}
       />
     </div>
-    <div className={classes.options}>
-      <div className={classes.remember}>
-        <Checkbox
-          name='remember'
-          value='remember'
-          label='Remember'
-          labelStyle={{ fontSize: '.8rem' }}
-        />
-      </div>
-      <Link className={classes.recover} to='/recover'>
-        Forgot Password?
-      </Link>
-    </div>
+
   </form>
 )
 

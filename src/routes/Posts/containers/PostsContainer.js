@@ -9,6 +9,9 @@ import NewPostDialog from '../components/NewPostDialog/NewPostDialog'
 import CircularProgress from 'material-ui/CircularProgress'
 
 import classes from './PostsContainer.scss'
+import TextField from 'material-ui/TextField'
+import { Field, reduxForm } from 'redux-form'
+import RaisedButton from 'material-ui/RaisedButton'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -109,27 +112,132 @@ export default class Posts extends Component {
     this.setState(newState)
   }
 
-  render () {
+  /*constructor (props) {
+    super(props)
+    const { posts } = this.props
     const { account } = this.props
+    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+    var schoolsPosts = []
+    var displayPosts = []
+    if (account) {
+      schoolsPosts = filter(posts, {'schoolId': account.schoolId})
+    }
+    displayPosts = !isEmpty(schoolsPosts) &&
+               map(schoolsPosts, (post, key) => {
+                 if (post.hasImg) {
+                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+                  .then((url) => {
+                    console.log(url)
+                    return ({post: post, imageUri: url})
+                  })
+                  .catch(err => {
+                    console.error('error getting downloadURL', err)
+                  })
+                 } else {
+                   return ({post: post, imageUri: null})
+                 }
+               })
+    this.state = {displayPostsState: displayPosts}
+    console.log(displayPosts)
+  }
+  componentWillReceiveProps (nextProps) {
+    const { posts } = nextProps
+    const { account } = nextProps
+    const postImagesRef = nextProps.firebase.storage().ref().child('images/posts/')
+    var schoolsPosts = []
+    var displayPosts = []
+    if (account) {
+      schoolsPosts = filter(posts, {'schoolId': account.schoolId})
+    }
+    displayPosts = !isEmpty(schoolsPosts) &&
+               map(schoolsPosts, (post, key) => {
+                 if (post.hasImg) {
+                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+                  .then((url) => {
+                    console.log(url)
+                    return ({post: post, imageUri: url})
+                  })
+                  .catch(err => {
+                    console.error('error getting downloadURL', err)
+                  })
+                 } else {
+                   return ({post: post, imageUri: null})
+                 }
+               })
+    this.setState = ({displayPostsState: displayPosts})
+    console.log(this.state.displayPostsState)
+  }*/
+  
+  render () {
+    const { posts } = this.props
+    const { account } = this.props
+    var displayPosts
+    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     // post Route is being loaded
     if (this.props.children) return this.props.children
-
-    const { posts } = this.props
-    const { newPostModal } = this.state
-    var displayPosts = null
     if (account) {
-      displayPosts = filter(posts, {'schoolId': account.schoolId})
+      //displayPosts = filter(posts, {'schoolId': account.schoolId})
+      displayPosts = posts
     }
-    if (isEmpty(displayPosts)) {
+    const { newPostModal } = this.state
+
+
+    var postList = !isEmpty(displayPosts) &&
+               map(displayPosts, (post, key) => {
+                 var tile
+                 if (post.hasImg) {
+                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+                  .then((url) => {
+                    console.log(url)
+                    //return (
+                      tile = <PostTile
+                        key={`${post.postkey}-Collab-${key}`}
+                        post={post}
+                        onCollabClick={this.collabClick}
+                        onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
+                        onDelete={this.deletePost}
+                        postPicture={url}
+                      />
+                   // )
+                  })
+                  .catch(err => {
+                    console.error('error getting downloadURL', err)
+                  })
+                 } 
+                  // return (
+                     tile = 
+                       <PostTile
+                         key={`${post.postkey}-Collab-${key}`}
+                         post={post}
+                         onCollabClick={this.collabClick}
+                         onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
+                         onDelete={this.deletePost}
+                         postPicture={null}
+                        />
+                 //  )
+                
+                console.log(tile)
+                return (tile)
+               })
+    if (isEmpty(postList)) {
       return (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       )
     }
-
     return (
       <div className={classes.container}>
+        <TextField
+          hintText="Search"
+        />
+        <div className={classes.submit}>
+            <RaisedButton
+              label='Seach'
+              primary
+              type='submit'
+            />
+        </ div>
         {
           newPostModal &&
             <NewPostDialog
@@ -143,7 +251,8 @@ export default class Posts extends Component {
             onClick={() => this.toggleModal('newPost')}
           />
           {
-            !isEmpty(displayPosts) &&
+            postList
+            /*!isEmpty(displayPosts) &&
                map(displayPosts, (post, key) => (
                  <PostTile
                    key={`${post.postkey}-Collab-${key}`}
@@ -151,8 +260,9 @@ export default class Posts extends Component {
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
                    onDelete={this.deletePost}
+                   postPicture={imageUri}
                  />
-              ))
+              ))*/
           }
         </div>
       </div>
