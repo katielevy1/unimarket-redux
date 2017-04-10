@@ -54,7 +54,7 @@ export default class Posts extends Component {
   }
 
   newSubmit = (newPost) => {
-    const { auth, account, firebase: { push } } = this.props
+    const { auth, account, firebase: { push, set } } = this.props
     if (auth.uid) {
       newPost.posterID = auth.uid
       newPost.schoolId = account.schoolId
@@ -75,6 +75,16 @@ export default class Posts extends Component {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
       })
+
+/*
+    push('posts', newPost)
+    .then((newPostRef) =>
+      console.log(newPostRef)
+      console.log(newPostRef.key)
+      set(newPostRef, {newPost, postKey: newPostRef.key})
+    )*/
+
+
     //console.log(newPostKey)
     // update('/posts/' + newPostKey, {postKey: newPostKey})
 
@@ -106,9 +116,11 @@ export default class Posts extends Component {
 
     const { posts } = this.props
     const { newPostModal } = this.state
-    console.log(account)
-    const displayPosts = filter(posts, {'schoolId': account.schoolId})
-    if (!isLoaded(displayPosts)) {
+    var displayPosts = null
+    if (account) {
+      displayPosts = filter(posts, {'schoolId': account.schoolId})
+    }
+    if (isEmpty(displayPosts)) {
       return (
         <div className={classes.progress}>
           <CircularProgress />

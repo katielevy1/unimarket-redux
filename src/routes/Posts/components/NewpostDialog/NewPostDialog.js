@@ -88,6 +88,7 @@ export default class NewPostDialog extends Component {
               error={error || null}
               label='Post Title'
             />
+            <br />
             <Field
               name='description'
               component={TextField}
