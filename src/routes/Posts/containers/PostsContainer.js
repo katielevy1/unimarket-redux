@@ -12,11 +12,45 @@ import classes from './PostsContainer.scss'
 import TextField from 'material-ui/TextField'
 import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
+import PostList from './DisplayPosts'
 
 // redux/firebase
 import { connect } from 'react-redux'
 import { firebase, helpers } from 'react-redux-firebase'
 const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
+
+  const getVisiblePosts = (posts) => {
+    const { account } = this.props
+    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+    const schoolsPosts = filter(posts, {'schoolId': account.schoolId})
+    return !isEmpty(schoolsPosts) &&
+               map(schoolsPosts, (post, key) => {
+                 if (post.hasImg) {
+                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+                  .then((url) => {
+                    console.log(url)
+                    return ({post: post, imageUri: url})
+                  })
+                  .catch(err => {
+                    console.error('error getting downloadURL', err)
+                  })
+                 } else {
+                   return ({post: post, imageUri: null})
+                 }
+               })
+  }
+  const mapStateToProps = (state) => {
+    ({ firebase }, { params }) => ({
+      posts: dataToJS(firebase, 'posts'),
+    })
+    return {
+      displayPosts: getVisiblePosts(state.posts)
+    }
+  }
+
+  const VisiblePostList = connect(
+    mapStateToProps,
+  )(PostList)
 
 // Decorators
 @firebase(
@@ -37,6 +71,7 @@ const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
     account: pathToJS(firebase, 'profile')
   })
 )
+
 export default class Posts extends Component {
   static contextTypes = {
     router: React.PropTypes.object.isRequired
@@ -55,6 +90,7 @@ export default class Posts extends Component {
     children: PropTypes.object,
     params: PropTypes.object
   }
+
 
   newSubmit = (newPost) => {
     const { auth, account, firebase: { push, set } } = this.props
@@ -171,17 +207,18 @@ export default class Posts extends Component {
   render () {
     const { posts } = this.props
     const { account } = this.props
-    var displayPosts
-    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+    
+    //var displayPosts
+    //const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     // post Route is being loaded
     if (this.props.children) return this.props.children
-    if (account) {
+    //if (account) {
       //displayPosts = filter(posts, {'schoolId': account.schoolId})
-      displayPosts = posts
-    }
+   //   displayPosts = posts
+   // }
     const { newPostModal } = this.state
 
-
+/*
     var postList = !isEmpty(displayPosts) &&
                map(displayPosts, (post, key) => {
                  var tile
@@ -218,8 +255,8 @@ export default class Posts extends Component {
                 
                 console.log(tile)
                 return (tile)
-               })
-    if (isEmpty(postList)) {
+               })*/
+    if (isEmpty(posts)) {
       return (
         <div className={classes.progress}>
           <CircularProgress />
@@ -250,20 +287,22 @@ export default class Posts extends Component {
           <NewPostTile
             onClick={() => this.toggleModal('newPost')}
           />
-          {
-            postList
-            /*!isEmpty(displayPosts) &&
-               map(displayPosts, (post, key) => (
+          <VisiblePostList />
+          {/*
+            
+            //postList
+            !isEmpty(displayPosts) &&
+               map(displayPosts, (item, key) => (
                  <PostTile
-                   key={`${post.postkey}-Collab-${key}`}
-                   post={post}
+                   key={`${item.post.postkey}-Collab-${key}`}
+                   post={item.post}
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
                    onDelete={this.deletePost}
-                   postPicture={imageUri}
+                   postPicture={item.imageUri}
                  />
-              ))*/
-          }
+              ))
+          */}
         </div>
       </div>
     )
