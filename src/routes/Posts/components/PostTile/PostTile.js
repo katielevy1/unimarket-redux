@@ -4,11 +4,11 @@ import { isObject } from 'lodash'
 
 import classes from './PostTile.scss'
 
-export const PostTile = ({ post, onSelect, postPicture }) => (
+export const PostTile = ({ post, onSelect }) => (
   <Paper key={`Post-${post.postKey}`} className={classes['container']}>
     <div className={classes['top']}>
       <span className={classes['picture']}>
-        <img src={postPicture} />
+        
       </span>
     </div>
     <div className={classes['bottom']}>

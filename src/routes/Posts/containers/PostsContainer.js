@@ -18,7 +18,7 @@ import PostList from './DisplayPosts'
 import { connect } from 'react-redux'
 import { firebase, helpers } from 'react-redux-firebase'
 const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
-
+/*
   const getVisiblePosts = (posts) => {
     const { account } = this.props
     const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
@@ -51,6 +51,7 @@ const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
   const VisiblePostList = connect(
     mapStateToProps,
   )(PostList)
+*/
 
 // Decorators
 @firebase(
@@ -208,14 +209,13 @@ export default class Posts extends Component {
     const { posts } = this.props
     const { account } = this.props
     
-    //var displayPosts
-    //const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+    var displayPosts
+    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     // post Route is being loaded
     if (this.props.children) return this.props.children
-    //if (account) {
-      //displayPosts = filter(posts, {'schoolId': account.schoolId})
-   //   displayPosts = posts
-   // }
+    if (account) {
+      displayPosts = filter(posts, {'schoolId': account.schoolId})
+    }
     const { newPostModal } = this.state
 
 /*
@@ -287,22 +287,20 @@ export default class Posts extends Component {
           <NewPostTile
             onClick={() => this.toggleModal('newPost')}
           />
-          <VisiblePostList />
-          {/*
-            
+          { 
             //postList
             !isEmpty(displayPosts) &&
                map(displayPosts, (item, key) => (
                  <PostTile
-                   key={`${item.post.postkey}-Collab-${key}`}
-                   post={item.post}
+                   key={`${item.postkey}-Collab-${key}`}
+                   post={item}
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
                    onDelete={this.deletePost}
-                   postPicture={item.imageUri}
+                   //postPicture={item.imageUri}
                  />
               ))
-          */}
+          }
         </div>
       </div>
     )
