@@ -12,9 +12,8 @@ import classes from './PostsContainer.scss'
 import TextField from 'material-ui/TextField'
 import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
-import PostList from './DisplayPosts'
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -25,40 +24,7 @@ const styles = {
     width: 200,
   },
 };
-/*
-  const getVisiblePosts = (posts) => {
-    const { account } = this.props
-    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
-    const schoolsPosts = filter(posts, {'schoolId': account.schoolId})
-    return !isEmpty(schoolsPosts) &&
-               map(schoolsPosts, (post, key) => {
-                 if (post.hasImg) {
-                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
-                  .then((url) => {
-                    console.log(url)
-                    return ({post: post, imageUri: url})
-                  })
-                  .catch(err => {
-                    console.error('error getting downloadURL', err)
-                  })
-                 } else {
-                   return ({post: post, imageUri: null})
-                 }
-               })
-  }
-  const mapStateToProps = (state) => {
-    ({ firebase }, { params }) => ({
-      posts: dataToJS(firebase, 'posts'),
-    })
-    return {
-      displayPosts: getVisiblePosts(state.posts)
-    }
-  }
 
-  const VisiblePostList = connect(
-    mapStateToProps,
-  )(PostList)
-*/
 
 // Decorators
 @firebase(
@@ -157,62 +123,6 @@ export default class Posts extends Component {
     this.setState(newState)
   }
   handleChange = (event, index, value) => this.setState({value});
-
-  /*constructor (props) {
-    super(props)
-    const { posts } = this.props
-    const { account } = this.props
-    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
-    var schoolsPosts = []
-    var displayPosts = []
-    if (account) {
-      schoolsPosts = filter(posts, {'schoolId': account.schoolId})
-    }
-    displayPosts = !isEmpty(schoolsPosts) &&
-               map(schoolsPosts, (post, key) => {
-                 if (post.hasImg) {
-                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
-                  .then((url) => {
-                    console.log(url)
-                    return ({post: post, imageUri: url})
-                  })
-                  .catch(err => {
-                    console.error('error getting downloadURL', err)
-                  })
-                 } else {
-                   return ({post: post, imageUri: null})
-                 }
-               })
-    this.state = {displayPostsState: displayPosts}
-    console.log(displayPosts)
-  }
-  componentWillReceiveProps (nextProps) {
-    const { posts } = nextProps
-    const { account } = nextProps
-    const postImagesRef = nextProps.firebase.storage().ref().child('images/posts/')
-    var schoolsPosts = []
-    var displayPosts = []
-    if (account) {
-      schoolsPosts = filter(posts, {'schoolId': account.schoolId})
-    }
-    displayPosts = !isEmpty(schoolsPosts) &&
-               map(schoolsPosts, (post, key) => {
-                 if (post.hasImg) {
-                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
-                  .then((url) => {
-                    console.log(url)
-                    return ({post: post, imageUri: url})
-                  })
-                  .catch(err => {
-                    console.error('error getting downloadURL', err)
-                  })
-                 } else {
-                   return ({post: post, imageUri: null})
-                 }
-               })
-    this.setState = ({displayPostsState: displayPosts})
-    console.log(this.state.displayPostsState)
-  }*/
   
   render () {
     const { posts } = this.props
@@ -229,45 +139,19 @@ export default class Posts extends Component {
       displayPosts = filter(displayPosts, {'category': this.state.value})
     }
     const { newPostModal } = this.state
+  
+    map(displayPosts, (post, key) => {
+                    var tile
+                    if (post.hasImg) {
+                      postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+                      .then((url) => {
+                        console.log(url)
+                        var img = document.getElementById(post.postKey)
+                        img.src = url;
+                      })
+                    }
+    })
 
-/*
-    var postList = !isEmpty(displayPosts) &&
-               map(displayPosts, (post, key) => {
-                 var tile
-                 if (post.hasImg) {
-                   postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
-                  .then((url) => {
-                    console.log(url)
-                    //return (
-                      tile = <PostTile
-                        key={`${post.postkey}-Collab-${key}`}
-                        post={post}
-                        onCollabClick={this.collabClick}
-                        onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
-                        onDelete={this.deletePost}
-                        postPicture={url}
-                      />
-                   // )
-                  })
-                  .catch(err => {
-                    console.error('error getting downloadURL', err)
-                  })
-                 } 
-                  // return (
-                     tile = 
-                       <PostTile
-                         key={`${post.postkey}-Collab-${key}`}
-                         post={post}
-                         onCollabClick={this.collabClick}
-                         onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
-                         onDelete={this.deletePost}
-                         postPicture={null}
-                        />
-                 //  )
-                
-                console.log(tile)
-                return (tile)
-               })*/
     if (isEmpty(posts)) {
       return (
         <div className={classes.progress}>
@@ -315,8 +199,7 @@ export default class Posts extends Component {
           <NewPostTile
             onClick={() => this.toggleModal('newPost')}
           />
-          { 
-            //postList
+          {
             !isEmpty(displayPosts) &&
                map(displayPosts, (item, key) => (
                  <PostTile
@@ -325,7 +208,6 @@ export default class Posts extends Component {
                    onCollabClick={this.collabClick}
                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
                    onDelete={this.deletePost}
-                   //postPicture={item.imageUri}
                  />
               ))
           }
