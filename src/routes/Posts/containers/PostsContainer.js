@@ -225,6 +225,9 @@ export default class Posts extends Component {
     if (account) {
       displayPosts = filter(posts, {'schoolId': account.schoolId})
     }
+    if (this.state.value !== 1) {
+      displayPosts = filter(displayPosts, {'category': this.state.value})
+    }
     const { newPostModal } = this.state
 
 /*
@@ -292,10 +295,12 @@ export default class Posts extends Component {
           style={styles.customWidth}
         >
           <MenuItem value={1} primaryText="All" />
-          <MenuItem value={2} primaryText="Textbooks" />
-          <MenuItem value={3} primaryText="Tickets" />
-          <MenuItem value={4} primaryText="Electronics" />
-          <MenuItem value={5} primaryText="Furniture" />
+          <MenuItem value={'Books'} primaryText="Books" />
+          <MenuItem value={'Clothing'} primaryText="Clothing" />
+          <MenuItem value={'Electronics'} primaryText="Electronics" />
+          <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
+          <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
+          <MenuItem value={'Misc'} primaryText="Misc" />
         </DropDownMenu>
         </div>
         {
