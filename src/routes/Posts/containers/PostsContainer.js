@@ -13,11 +13,18 @@ import TextField from 'material-ui/TextField'
 import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import PostList from './DisplayPosts'
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 // redux/firebase
 import { connect } from 'react-redux'
 import { firebase, helpers } from 'react-redux-firebase'
 const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
+const styles = {
+  customWidth: {
+    width: 200,
+  },
+};
 /*
   const getVisiblePosts = (posts) => {
     const { account } = this.props
@@ -80,7 +87,8 @@ export default class Posts extends Component {
 
   state = {
     newPostModal: false,
-    addPostModal: false
+    addPostModal: false,
+    value: 1
   }
 
   static propTypes = {
@@ -148,6 +156,7 @@ export default class Posts extends Component {
     newState[`${name}Modal`] = !this.state[`${name}Modal`]
     this.setState(newState)
   }
+  handleChange = (event, index, value) => this.setState({value});
 
   /*constructor (props) {
     super(props)
@@ -275,6 +284,20 @@ export default class Posts extends Component {
               type='submit'
             />
         </ div>
+        <div>
+        <DropDownMenu
+          value={this.state.value}
+          onChange={this.handleChange}
+          autoWidth={false}
+          style={styles.customWidth}
+        >
+          <MenuItem value={1} primaryText="All" />
+          <MenuItem value={2} primaryText="Textbooks" />
+          <MenuItem value={3} primaryText="Tickets" />
+          <MenuItem value={4} primaryText="Electronics" />
+          <MenuItem value={5} primaryText="Furniture" />
+        </DropDownMenu>
+        </div>
         {
           newPostModal &&
             <NewPostDialog
