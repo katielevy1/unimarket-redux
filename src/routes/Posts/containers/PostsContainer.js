@@ -68,7 +68,7 @@ export default class Posts extends Component {
 
 
   newSubmit = (newPost) => {
-    const { auth, account, firebase: { push, set } } = this.props
+    const { auth, account, firebase: { push, set, uniqueSet } } = this.props
     if (auth.uid) {
       newPost.posterID = auth.uid
       newPost.schoolId = account.schoolId
@@ -81,37 +81,17 @@ export default class Posts extends Component {
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
     newPost.hasImg = false
-    newPost.postKey = ''
-    // var newPostKey = firebase.database().ref().child('posts').push().key;
-    push('posts', newPost)
+    // Create new post key
+    var newPostKey = push('posts').key
+    newPost.postKey = newPostKey
+    // Add the post to firebase database
+    uniqueSet('posts/' + newPostKey, newPost)
     .then(() => this.setState({ newPostModal: false }))
       .catch(err => {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
       })
-
-/*
-    push('posts', newPost)
-    .then((newPostRef) =>
-      console.log(newPostRef)
-      console.log(newPostRef.key)
-      set(newPostRef, {newPost, postKey: newPostRef.key})
-    )*/
-
-
-    //console.log(newPostKey)
-    // update('/posts/' + newPostKey, {postKey: newPostKey})
-
-    // firebase.database().ref().child('posts').push().key
-    // var updates = {}
-    // updates['/posts/' + newPostKey] = newPost
-    // updates['/users/' + auth.uid + '/Posts/' + newPostKey] = true
-    /*update('/users/' + auth.uid + '/Posts/', {newPostKey: true})
-      .then(() => this.setState({ newPostModal: false }))
-      .catch(err => {
-        // TODO: Show Snackbar
-        console.error('error creating new post', err)
-      })*/
+  
   }
 
   deletePost = ({ name }) =>
