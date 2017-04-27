@@ -15,8 +15,6 @@
     "start": "better-npm-run start",
     "dev": "better-npm-run dev",
     "dev:no-debug": "npm run dev -- --no_debug",
-    "test": "better-npm-run test",
-    "test:dev": "npm run test -- --watch",
     "create-config": "better-npm-run create-config",
     "build": "better-npm-run build",
     "build:dev": "better-npm-run build:dev",
@@ -61,13 +59,6 @@
     "start": {
       "command": "node bin/server",
       "env": {
-        "DEBUG": "app:*"
-      }
-    },
-    "test": {
-      "command": "node ./node_modules/karma/bin/karma start build/karma.conf",
-      "env": {
-        "NODE_ENV": "test",
         "DEBUG": "app:*"
       }
     },

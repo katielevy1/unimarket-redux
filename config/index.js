@@ -18,7 +18,6 @@ const config = {
   dir_client : 'src',
   dir_dist   : 'dist',
   dir_server : 'server',
-  dir_test   : 'tests',
 
   // ----------------------------------
   // Server Configuration
@@ -51,15 +50,8 @@ const config = {
     'redux'
   ],
 
-  compiler_css_modules: true, // enable/disable css modules
+  compiler_css_modules: true // enable/disable css modules
 
-  // ----------------------------------
-  // Test Configuration
-  // ----------------------------------
-  coverage_reporters : [
-    { type : 'text-summary' },
-    { type : 'lcov', dir : 'coverage' }
-  ]
 }
 
 /************************************************
@@ -82,8 +74,6 @@ config.globals = {
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',
   '__PROD__'     : config.env === 'production',
-  '__TEST__'     : config.env === 'test',
-  '__COVERAGE__' : !argv.watch && config.env === 'test',
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
 }
 
