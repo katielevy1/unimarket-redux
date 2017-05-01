@@ -8,6 +8,7 @@ const buttonStyle = { width: '100%' }
 import { Field, reduxForm } from 'redux-form'
 import TextField from '../../../../components/TextField'
 
+// make sure email is .edu and is required
 const validate = values => {
   const errors = {}
   var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$/
@@ -20,6 +21,7 @@ const validate = values => {
   return errors
 }
 
+// Sign up for a new account
 const SignupForm = ({ handleSubmit, submitting }) => {
   return (
     <form className={classes.container} onSubmit={handleSubmit}>

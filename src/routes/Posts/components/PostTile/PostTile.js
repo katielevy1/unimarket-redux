@@ -4,6 +4,7 @@ import { isObject } from 'lodash'
 
 import classes from './PostTile.scss'
 
+// Tile to display post sent from PostsContainer
 export const PostTile = ({ post, onSelect }) => (
   <Paper key={`Post-${post.postKey}`} className={classes['container']}>
     <div className={classes['top']}>
@@ -29,8 +30,7 @@ export const PostTile = ({ post, onSelect }) => (
 
 PostTile.propTypes = {
   post: PropTypes.object.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  postPicture: PropTypes.string
+  onSelect: PropTypes.func.isRequired
 }
 
 export default PostTile

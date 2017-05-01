@@ -16,6 +16,8 @@ const validate = values => {
   form: formName,
   validate
 })
+
+// Creating a new post
 export default class NewPostDialog extends Component {
   static propTypes = {
     open: PropTypes.bool,

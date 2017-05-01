@@ -9,6 +9,7 @@ const iconStyle = { width: iconSize, height: iconSize }
 const color = '#979797'
 const hoverColor = '#616161'
 
+// Button to create a new post
 export const NewPostTile = ({ onClick }) => (
   <Paper className={classes['container']} onClick={onClick}>
     <ContentAddCircle

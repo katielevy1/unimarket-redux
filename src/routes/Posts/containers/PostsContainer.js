@@ -46,6 +46,7 @@ const styles = {
   })
 )
 
+// List of posts component
 export default class Posts extends Component {
   static contextTypes = {
     router: React.PropTypes.object.isRequired
@@ -66,7 +67,7 @@ export default class Posts extends Component {
     params: PropTypes.object
   }
 
-
+  // Method for submitting a new post
   newSubmit = (newPost) => {
     const { auth, account, firebase: { push, set, uniqueSet } } = this.props
     if (auth.uid) {
@@ -76,7 +77,6 @@ export default class Posts extends Component {
       newPost.posterID = ''
       newPost.schoolId = ''
     }
-    console.log('testing...')
     newPost.category = ''
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
@@ -91,12 +91,13 @@ export default class Posts extends Component {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
       })
-  
   }
 
+  // Delete a post
   deletePost = ({ name }) =>
     this.props.firebase.remove(`posts/${name}`)
 
+  // Modal for creating a new post
   toggleModal = (name, post) => {
     let newState = {}
     newState[`${name}Modal`] = !this.state[`${name}Modal`]
@@ -107,7 +108,6 @@ export default class Posts extends Component {
   render () {
     const { posts } = this.props
     const { account } = this.props
-    
     var displayPosts
     const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     // post Route is being loaded
@@ -119,7 +119,7 @@ export default class Posts extends Component {
       displayPosts = filter(displayPosts, {'category': this.state.value})
     }
     const { newPostModal } = this.state
-  
+  // Map list of posts to get images for each post
     map(displayPosts, (post, key) => {
                     var tile
                     if (post.hasImg) {

@@ -23,6 +23,7 @@ const { isLoaded, isEmpty, pathToJS } = helpers
     account: pathToJS(firebase, 'profile')
   })
 )
+// Logic behind signing up for a new account
 export default class Signup extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -39,11 +40,13 @@ export default class Signup extends Component {
     isLoading: false
   }
 
+  // close bottom snackbar 
   handleRequestClose = () =>
     this.setState({
       snackCanOpen: false
     })
 
+  // Create new user in firebase when selecting submit button
   handleSignup = (creds) => {
     this.setState({
       snackCanOpen: true,
