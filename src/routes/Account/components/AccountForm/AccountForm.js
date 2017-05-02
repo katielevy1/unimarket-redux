@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { helpers } from 'react-redux-firebase'
 const { pathToJS } = helpers
 
+// Account form to change email or username
 export const AccountForm = ({ account, handleSubmit, submitting }) => (
   <div className={classes.container}>
     <h4>Account</h4>

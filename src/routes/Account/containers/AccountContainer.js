@@ -24,6 +24,7 @@ const { pathToJS, isLoaded } = helpers
     account: pathToJS(firebase, 'profile')
   })
 )
+// Account page to show picture and username and email
 export default class Account extends Component {
 
   static contextTypes = {

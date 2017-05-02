@@ -50,6 +50,7 @@ export default class Navbar extends Component {
     firebase: PropTypes.object.isRequired
   }
 
+  // Logout of firebase and direct to homepage
   handleLogout = () => {
     this.props.firebase.logout()
     this.context.router.push('/')
@@ -66,6 +67,7 @@ export default class Navbar extends Component {
       </IconButton>
     )
 
+    // Menu if not logged in
     const mainMenu = (
       <div className={classes['menu']}>
         <Link to={SIGNUP_PATH}>
@@ -86,6 +88,7 @@ export default class Navbar extends Component {
       auth.emailVerified
     ) : false
 
+    // Menu if logged in
     const rightMenu = verified ? (
       <IconMenu
         iconButtonElement={iconButton}
