@@ -3,6 +3,8 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import { Field, reduxForm, submit } from 'redux-form'
 import TextField from 'components/TextField'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 
 import classes from './NewPostDialog.scss'
 
@@ -90,13 +92,28 @@ export default class NewPostDialog extends Component {
               error={error || null}
               label='Post Title'
             />
-            <br />
+            <br /> 
             <Field
               name='description'
               component={TextField}
               error={error || null}
               label='Post Description'
             />
+            <p>Choose a category</p>
+            <DropDownMenu
+              value={this.state.value}
+              onChange={this.handleChange}
+              autoWidth={false}
+              style={{width: 300}}
+            >
+              <MenuItem value={1} primaryText="All" />
+              <MenuItem value={'Books'} primaryText="Books" />
+              <MenuItem value={'Clothing'} primaryText="Clothing" />
+              <MenuItem value={'Electronics'} primaryText="Electronics" />
+              <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
+              <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
+              <MenuItem value={'Misc'} primaryText="Misc" />
+            </DropDownMenu>
           </form>
         </div>
       </Dialog>

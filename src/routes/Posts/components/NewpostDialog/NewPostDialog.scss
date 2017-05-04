@@ -10,8 +10,14 @@
   input {
     width: 100%;
   }
+
 }
 .buttons {
   @extend .flex-column-center;
   justify-content: center;
 }
+  .menu {
+    customWidth: {
+    width: 200,
+  }
+  }
