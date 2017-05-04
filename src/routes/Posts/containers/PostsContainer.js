@@ -7,7 +7,8 @@ import PostTile from '../components/PostTile/PostTile'
 import NewPostTile from '../components/NewPostTile/NewPostTile'
 import NewPostDialog from '../components/NewPostDialog/NewPostDialog'
 import CircularProgress from 'material-ui/CircularProgress'
-
+import SearchForm from '../components/SearchForm/SearchForm'
+ 
 import classes from './PostsContainer.scss'
 import TextField from 'material-ui/TextField'
 import { Field, reduxForm } from 'redux-form'
@@ -55,7 +56,8 @@ export default class Posts extends Component {
   state = {
     newPostModal: false,
     addPostModal: false,
-    value: 1
+    value: 1,
+    searchVal: ''
   }
 
   static propTypes = {
@@ -104,6 +106,12 @@ export default class Posts extends Component {
     this.setState(newState)
   }
   handleChange = (event, index, value) => this.setState({value});
+  // Change the searchVal state when submiting for search
+  handleSearch = searchData => {
+    this.setState({
+      searchVal: searchData.value
+    })
+  }
   
   render () {
     const { posts } = this.props
@@ -112,24 +120,42 @@ export default class Posts extends Component {
     const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     // post Route is being loaded
     if (this.props.children) return this.props.children
+    // Filter posts by the user's school
     if (account) {
       displayPosts = filter(posts, {'schoolId': account.schoolId})
     }
+    // Filer posts by the category filter value
     if (this.state.value !== 1) {
       displayPosts = filter(displayPosts, {'category': this.state.value})
+    }
+    // Filter posts by the searched value
+    if (this.state.searchVal !== '' && this.state.searchVal) {
+      const searchFor = this.state.searchVal.toUpperCase()
+      displayPosts = filter(displayPosts,
+        function (item) {
+          // Check if search value is in the post's title, description, or category
+          return ((item.title.toUpperCase().indexOf(searchFor) > -1) |
+            (item.description.toUpperCase().indexOf(searchFor) > -1) |
+            (item.category.toUpperCase().indexOf(searchFor) > -1))
+        })
     }
     const { newPostModal } = this.state
   // Map list of posts to get images for each post
     map(displayPosts, (post, key) => {
-                    var tile
-                    if (post.hasImg) {
-                      postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
-                      .then((url) => {
-                        console.log(url)
-                        var img = document.getElementById(post.postKey)
-                        img.src = url;
-                      })
-                    }
+      // Check if there is an image for the post and the image has not already been loaded
+      if (post.hasImg && post.postKey && !(document.getElementById(post.postKey))) {
+        postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+        .then((url) => {
+          // Add the image for the post to the postTile img HTML tag
+          if (url) {
+            var img = document.getElementById(post.postKey)
+            img.src = url
+          }
+        })
+        .catch(function (e) {
+          // no image not accessible for post
+        })
+      }
     })
 
     if (isEmpty(posts)) {
@@ -141,16 +167,7 @@ export default class Posts extends Component {
     }
     return (
       <div className={classes.container}>
-        <TextField
-          hintText="Search"
-        />
-        <div className={classes.submit}>
-            <RaisedButton
-              label='Seach'
-              primary
-              type='submit'
-            />
-        </ div>
+        <SearchForm onSubmit={this.handleSearch} />
         <div>
         <DropDownMenu
           value={this.state.value}
