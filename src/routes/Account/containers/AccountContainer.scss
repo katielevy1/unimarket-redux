@@ -14,6 +14,8 @@
   @extend .flex-row-center;
   width: 100%;
   align-items: center;
+  margin: 3rem;
+  margin-bottom: 0;
 }
 .avatar {
   &-new {
@@ -45,4 +47,19 @@
   flex-basis: 60%;
   margin-bottom: 3rem;
   margin-top: 2rem;
+  h4 {
+    font-size: 16px;
+  }
+  .name {
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .email {
+    color: grey;
+  }
+}
+.signout {
+  align-self: flex-end;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }

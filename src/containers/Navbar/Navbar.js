@@ -100,7 +100,7 @@ export default class Navbar extends Component {
           primaryText='Account'
           value='account'
           onTouchTap={() => this.context.router.push(ACCOUNT_PATH)}
-        />
+        /> 
         <MenuItem
           primaryText='Sign out'
           value='logout'

@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 
 // Components
-import AccountForm from '../components/AccountForm/AccountForm'
 import CircularProgress from 'material-ui/CircularProgress'
 import Paper from 'material-ui/Paper'
+import RaisedButton from 'material-ui/RaisedButton'
 
 // styles
 import classes from './AccountContainer.scss'
-
-const defaultUserImageUrl = 'https://s3.amazonaws.com/kyper-cdn/img/User.png'
+import StockPhoto from 'static/User.png'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -65,12 +64,13 @@ export default class Account extends Component {
   }
 
   render () {
-    const { account, firebase: { saveAccount } } = this.props
-
+    const { account } = this.props
+    const name = account ? account.firstName + ' ' + account.lastName : ''
+    const email = account ? account.email : ''
     if (!isLoaded(account)) {
       return (
         <div className={classes['container']}>
-          <CircularProgress size={1.5} />
+          <CircularProgress />
         </div>
       )
     }
@@ -82,17 +82,23 @@ export default class Account extends Component {
             <div className={classes['avatar']}>
               <img
                 className={classes['avatar-current']}
-                src={account && account.avatarUrl || defaultUserImageUrl}
+                src={account && account.avatarUrl || StockPhoto}
                 onClick={this.toggleModal}
               />
             </div>
             <div className={classes['meta']}>
-              <AccountForm
-                onSubmit={saveAccount}
-                account={account}
-              />
+              <h4>Profile</h4>
+              <div className={classes['name']}>
+                {name}
+              </div>
+              <div className={classes['email']}>
+                {email}
+              </div>
             </div>
           </div>
+          <div className={classes['signout']}>
+            <RaisedButton label='Sign Out' primary onTouchTap={this.handleLogout} />
+          </ div>
         </Paper>
       </div>
     )
