@@ -20,12 +20,6 @@ import MenuItem from 'material-ui/MenuItem'
 import { connect } from 'react-redux'
 import { firebase, helpers } from 'react-redux-firebase'
 const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
-const styles = {
-  customWidth: {
-    width: 200,
-  },
-};
-
 
 // Decorators
 @firebase(
@@ -79,7 +73,7 @@ export default class Posts extends Component {
       newPost.posterID = ''
       newPost.schoolId = ''
     }
-    newPost.category = ''
+   
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
     newPost.hasImg = false
@@ -173,7 +167,7 @@ export default class Posts extends Component {
           value={this.state.value}
           onChange={this.handleChange}
           autoWidth={false}
-          style={styles.customWidth}
+          style={{width: 300}}
         >
           <MenuItem value={1} primaryText="All" />
           <MenuItem value={'Books'} primaryText="Books" />

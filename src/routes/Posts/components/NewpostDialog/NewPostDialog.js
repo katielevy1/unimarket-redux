@@ -3,8 +3,8 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import { Field, reduxForm, submit } from 'redux-form'
 import TextField from 'components/TextField'
-import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import SelectField from 'material-ui/SelectField'
 
 import classes from './NewPostDialog.scss'
 
@@ -45,6 +45,7 @@ export default class NewPostDialog extends Component {
     }
   }
 
+  // Close the dialog box
   close = () => {
     this.setState({
       open: false
@@ -58,6 +59,7 @@ export default class NewPostDialog extends Component {
     e.preventDefault()
     this.props.dispatch(submit(formName))
   }
+  handleChange = (event, index, value) => this.setState({value});
 
   render () {
     const { open, error } = this.state
@@ -92,7 +94,7 @@ export default class NewPostDialog extends Component {
               error={error || null}
               label='Post Title'
             />
-            <br /> 
+            <br />
             <Field
               name='description'
               component={TextField}
@@ -100,20 +102,19 @@ export default class NewPostDialog extends Component {
               label='Post Description'
             />
             <p>Choose a category</p>
-            <DropDownMenu
-              value={this.state.value}
-              onChange={this.handleChange}
-              autoWidth={false}
-              style={{width: 300}}
-            >
-              <MenuItem value={1} primaryText="All" />
+            <Field
+              name='category'
+              component={SelectField}
+              error={error || null}
+              label='Category'>
+              <MenuItem value={'0'} primaryText="" />
               <MenuItem value={'Books'} primaryText="Books" />
               <MenuItem value={'Clothing'} primaryText="Clothing" />
               <MenuItem value={'Electronics'} primaryText="Electronics" />
               <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
               <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
               <MenuItem value={'Misc'} primaryText="Misc" />
-            </DropDownMenu>
+            </Field>
           </form>
         </div>
       </Dialog>
