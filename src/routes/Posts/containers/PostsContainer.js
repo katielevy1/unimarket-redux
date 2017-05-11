@@ -73,10 +73,11 @@ export default class Posts extends Component {
       newPost.posterID = ''
       newPost.schoolId = ''
     }
-   
+    newPost.category = 'Books'
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
     newPost.hasImg = false
+    newPost.price = '1'
     // Create new post key
     var newPostKey = push('posts').key
     newPost.postKey = newPostKey
@@ -87,6 +88,8 @@ export default class Posts extends Component {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
       })
+    // Add post to User's list of Posts
+    set('users/' + auth.uid + '/Posts/' + newPostKey, true)
   }
 
   // Delete a post

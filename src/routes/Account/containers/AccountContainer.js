@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import { map, filter, foreach } from 'lodash'
 
 // Components
 import CircularProgress from 'material-ui/CircularProgress'
 import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
+import PostTile from 'routes/Posts/components/PostTile/PostTile'
+import NewPostTile from 'routes/Posts/components/NewPostTile/NewPostTile'
 
 // styles
 import classes from './AccountContainer.scss'
@@ -12,13 +15,24 @@ import StockPhoto from 'static/User.png'
 // redux/firebase
 import { connect } from 'react-redux'
 import { firebase, helpers } from 'react-redux-firebase'
-const { pathToJS, isLoaded } = helpers
+const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
 
 // Props decorators
-@firebase()
+@firebase(
+  ({ params, auth }) => ([
+    {
+      path: 'posts',
+      populates: [
+        { child: 'owner', root: 'users' }
+      ]
+    }
+    // 'posts#populate=owner:users' // string equivalent
+  ])
+)
 @connect(
   // Map state to props
   ({firebase}) => ({
+    posts: dataToJS(firebase, 'posts'),
     authError: pathToJS(firebase, 'authError'),
     account: pathToJS(firebase, 'profile')
   })
@@ -75,6 +89,32 @@ export default class Account extends Component {
       )
     }
 
+    const { posts } = this.props
+    const myPosts = account ? account.Posts : null
+    const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+    var displayPosts = []
+    // Map list of posts to get images for each post
+    foreach(myPosts, (val, key) => {
+      let post = find(posts, {'postKey': posts.key})
+      displayPosts.push(post)
+      // Check if there is an image for the post and the image has not already been loaded
+      if (post.hasImg && post.postKey && !(document.getElementById(post.postKey))) {
+        postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
+        .then((url) => {
+          // Add the image for the post to the postTile img HTML tag
+          if (url) {
+            var img = document.getElementById(post.postKey)
+            img.src = url
+          }
+        })
+        .catch(function (e) {
+          // no image not accessible for post
+        })
+      }
+    })
+
+
+
     return (
       <div className={classes['container']}>
         <Paper className={classes['pane']}>
@@ -100,6 +140,23 @@ export default class Account extends Component {
             <RaisedButton label='Sign Out' primary onTouchTap={this.handleLogout} />
           </ div>
         </Paper>
+        <div className={classes.tiles}>
+          <NewPostTile
+            onClick={() => this.toggleModal('newPost')}
+          />
+          {
+            !isEmpty(displayPosts) &&
+               map(displayPosts, (item, key) => (
+                 <PostTile
+                   key={`${item.postkey}-Collab-${key}`}
+                   post={item}
+                   onCollabClick={this.collabClick}
+                   // onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
+                   onDelete={this.deletePost}
+                 />
+              ))
+          }
+        </div>
       </div>
     )
   }
