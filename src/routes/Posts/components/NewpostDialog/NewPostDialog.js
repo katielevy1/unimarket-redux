@@ -5,6 +5,7 @@ import { Field, reduxForm, submit } from 'redux-form'
 import TextField from 'components/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import SelectField from 'material-ui/SelectField'
+import PictureUpload from '../PictureUpload'
 
 import classes from './NewPostDialog.scss'
 
@@ -84,6 +85,7 @@ export default class NewPostDialog extends Component {
         modal={false}
         actions={actions}
         open={open}
+        autoScrollBodyContent={true}
         onRequestClose={this.close}
         contentClassName={classes['container']}>
         <div className={classes['inputs']}>
@@ -115,6 +117,8 @@ export default class NewPostDialog extends Component {
               <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
               <MenuItem value={'Misc'} primaryText="Misc" />
             </Field>
+            <p>upload a picture for your post</p>
+            <PictureUpload />
           </form>
         </div>
       </Dialog>
