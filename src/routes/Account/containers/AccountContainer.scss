@@ -1,7 +1,7 @@
 @import 'base';
 
 .container {
-  @extend .flex-row-center;
+  @extend .flex-column-center;
   align-items: center;
   padding-top: 4rem;
 }
@@ -62,4 +62,17 @@
   align-self: flex-end;
   margin-right: 1rem;
   margin-bottom: 1rem;
+}
+.tiles {
+  @extend .flex-column-center;
+  -webkit-flex-flow: row wrap;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: initial;
+}
+
+.myPosts {
+  text-align: center;
+  margin-top: 3rem;
+  background: #3498db;
 }

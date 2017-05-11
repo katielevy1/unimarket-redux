@@ -31,7 +31,7 @@ const { dataToJS, pathToJS, isLoaded, isEmpty } = helpers
 )
 @connect(
   // Map state to props
-  ({firebase}) => ({
+  ({firebase}, { params }) => ({
     posts: dataToJS(firebase, 'posts'),
     authError: pathToJS(firebase, 'authError'),
     account: pathToJS(firebase, 'profile'),
@@ -49,11 +49,12 @@ export default class Account extends Component {
     account: PropTypes.object,
     posts: PropTypes.object,
     auth: PropTypes.object,
-    firebase: PropTypes.shape({
+    firebase: PropTypes.object
+    /*shape({
       logout: PropTypes.func.isRequired,
       uploadAvatar: PropTypes.func,
       updateAccount: PropTypes.func
-    })
+    })*/
   }
 
   state = { modalOpen: false }
@@ -93,26 +94,13 @@ export default class Account extends Component {
     }
 
     const { posts, auth } = this.props
-    const myPosts = account ? account.Posts : null
     const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
     var displayPosts
-    console.log(posts)
     if (auth) {
       displayPosts = filter(posts, {'posterID': auth.uid})
     }
-    console.log(displayPosts)
-    /*
-    if (account) {
-      displayPosts = filter(posts, {'owner': auth.uid})
-    }
-    
     // Map list of posts to get images for each post
-    foreach(myPosts, (val, key) => {
-      console.log(key)
-      console.log(posts)
-      var post = filter(posts, {'postKey': key})
-      displayPosts.push(post)
-      console.log(post)
+    map(displayPosts, (post, key) => {
       // Check if there is an image for the post and the image has not already been loaded
       if (post.hasImg && post.postKey && !(document.getElementById(post.postKey))) {
         postImagesRef.child(post.postKey + '.jpg').getDownloadURL()
@@ -128,9 +116,6 @@ export default class Account extends Component {
         })
       }
     })
-    console.log(displayPosts)
-*/
-
 
     return (
       <div className={classes['container']}>
@@ -157,19 +142,22 @@ export default class Account extends Component {
             <RaisedButton label='Sign Out' primary onTouchTap={this.handleLogout} />
           </ div>
         </Paper>
-        <div className={classes.tiles}>
-          {
-            !isEmpty(displayPosts) &&
-               map(displayPosts, (item, key) => (
-                 <PostTile
-                   key={`${item.postkey}-Collab-${key}`}
-                   post={item}
-                   onCollabClick={this.collabClick}
-                   onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
-                   onDelete={this.deletePost}
-                 />
-              ))
-          }
+        <div className={classes['myPosts']}>
+          <h3>My Posts</h3>
+          <div className={classes.tiles}>
+            {
+              !isEmpty(displayPosts) &&
+                map(displayPosts, (item, key) => (
+                  <PostTile
+                    key={`${item.postkey}-Collab-${key}`}
+                    post={item}
+                    onCollabClick={this.collabClick}
+                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
+                    onDelete={this.deletePost}
+                  />
+                ))
+            }
+          </div>
         </div>
       </div>
     )
