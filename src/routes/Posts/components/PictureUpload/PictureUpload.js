@@ -2,16 +2,13 @@ import React, { Component, PropTypes } from 'react'
 
 import classes from './PictureUpload.scss'
 
-export default class NewPostDialog extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {file: '', imagePreviewUrl: ''}
+export default class PictureUpload extends Component {
+  static propTypes = {
+    submitPicture: PropTypes.func.isRequired
   }
-
-  _handleSubmit (e) {
-    e.preventDefault()
-    // TODO: do something with -> this.state.file
-    console.log('handle uploading-', this.state.file)
+  state = {
+    file: '',
+    imagePreviewUrl: ''
   }
 
   _handleImageChange (e) {
@@ -26,8 +23,8 @@ export default class NewPostDialog extends Component {
         imagePreviewUrl: reader.result
       })
     }
-
     reader.readAsDataURL(file)
+    this.props.submitPicture(file)
   }
 
   render () {
@@ -35,8 +32,6 @@ export default class NewPostDialog extends Component {
     let $imagePreview = null
     if (imagePreviewUrl) {
       $imagePreview = (<img src={imagePreviewUrl} />)
-    } else {
-      $imagePreview = (<div className='previewText'>Please select an Image for Preview</div>)
     }
 
     return (
@@ -45,9 +40,6 @@ export default class NewPostDialog extends Component {
           <input className={classes['fileInput']}
             type="file"
             onChange={(e) => this._handleImageChange(e)} />
-          <button className={classes['submitButton']}
-            type="submit"
-            onClick={(e) => this._handleSubmit(e)}>Upload Image</button>
         </form>
         <div className={classes['imgPreview']}>
           {$imagePreview}

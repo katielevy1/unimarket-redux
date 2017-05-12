@@ -51,7 +51,8 @@ export default class Posts extends Component {
     newPostModal: false,
     addPostModal: false,
     value: 1,
-    searchVal: ''
+    searchVal: '',
+    pictureFile: null
   }
 
   static propTypes = {
@@ -88,6 +89,12 @@ export default class Posts extends Component {
         // TODO: Show Snackbar
         console.error('error creating new post', err)
       })
+    // Upload post image to database
+    if (this.state.pictureFile) {
+      const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+      postImagesRef.child(newPostKey + '.jpg').getDownloadURL()
+      this.props.firebase.uploadFiles('images/posts/' + newPostKey, this.state.image)
+    }
     // Add post to User's list of Posts
     set('users/' + auth.uid + '/Posts/' + newPostKey, true)
   }
@@ -109,7 +116,12 @@ export default class Posts extends Component {
       searchVal: searchData.value
     })
   }
-  
+  submitPicture = (file) => {
+    console.log(file)
+    this.setState({
+      pictureFile: file
+    })
+  }
   render () {
     const { posts } = this.props
     const { account } = this.props
@@ -186,6 +198,7 @@ export default class Posts extends Component {
             <NewPostDialog
               open={newPostModal}
               onSubmit={this.newSubmit}
+              submitPicture={this.submitPicture}
               onRequestClose={() => this.toggleModal('newPost')}
             />
         }

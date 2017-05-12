@@ -6,6 +6,7 @@ import TextField from 'components/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import SelectField from 'material-ui/SelectField'
 import PictureUpload from '../PictureUpload'
+import Dropzone from 'react-dropzone'
 
 import classes from './NewPostDialog.scss'
 
@@ -26,7 +27,8 @@ export default class NewPostDialog extends Component {
     open: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    submitPicture: PropTypes.func.isRequired
   }
 
   state = {
@@ -61,6 +63,10 @@ export default class NewPostDialog extends Component {
     this.props.dispatch(submit(formName))
   }
   handleChange = (event, index, value) => this.setState({value});
+  submitPicture = (file) => {
+    console.log(file)
+    this.props.submitPicture(file)
+  }
 
   render () {
     const { open, error } = this.state
@@ -78,6 +84,7 @@ export default class NewPostDialog extends Component {
         onClick={this.handleSubmitClick}
       />
     ]
+    const categories = ['Books', 'Clothing', 'Electronics', 'Home/Appliances', 'Sports/Outdoors', 'Misc']
 
     return (
       <Dialog
@@ -104,22 +111,17 @@ export default class NewPostDialog extends Component {
               label='Post Description'
             />
             <p>Choose a category</p>
-            <Field
-              name='category'
-              component={SelectField}
-              error={error || null}
-              label='Category'>
-              <MenuItem value={'0'} primaryText="" />
-              <MenuItem value={'Books'} primaryText="Books" />
-              <MenuItem value={'Clothing'} primaryText="Clothing" />
-              <MenuItem value={'Electronics'} primaryText="Electronics" />
-              <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
-              <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
-              <MenuItem value={'Misc'} primaryText="Misc" />
+            <Field name="category" component="select">
+              <option value=""> </option>
+              {categories.map(categoryOption => (
+                <option value={categoryOption} key={categoryOption}>
+                  {categoryOption}
+                </option>
+              ))}
             </Field>
-            <p>upload a picture for your post</p>
-            <PictureUpload />
           </form>
+          <p>Choose a picture</p>
+          <PictureUpload submitPicture={this.submitPicture} />
         </div>
       </Dialog>
     )
