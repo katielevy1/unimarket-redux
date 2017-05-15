@@ -15,7 +15,7 @@ import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
-import StockPhoto from 'static/noimagefound.jpg'
+import StockPostPhoto from 'static/noimagefound.png'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -97,14 +97,13 @@ export default class Posts extends Component {
     if (this.state.pictureFile) {
       var picRef = this.props.firebase.storage().ref().child('images/posts/' + newPostKey + '.jpg')
       picRef.put(this.state.pictureFile).then(function(snap) {
-        console.log('uploading')
+        //console.log('uploading')
       })
       var pic = this.state.pictureFile
       set(pic, 'name', newPostKey + '.jpg')
       this.setState({
         pictureFile: pic
       })
-      console.log(this.state.pictureFile)
       // const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
       // Commented out for right now
       // this.props.firebase.uploadFile('images/posts/', pic)
@@ -131,7 +130,6 @@ export default class Posts extends Component {
     })
   }
   submitPicture = (file) => {
-    console.log(file)
     this.setState({
       pictureFile: file
     })
@@ -179,9 +177,8 @@ export default class Posts extends Component {
           // no image not accessible for post
         })
       } else {
-        /*console.log(StockPhoto)
-        var img = document.getElementById(post.postKey)
-        img.src = {StockPhoto}*/
+       /* var img = document.getElementById(post.postKey)
+        img.src = {StockPostPhoto}*/
       }
     })
 
