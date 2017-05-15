@@ -176,22 +176,22 @@ export default class Posts extends Component {
     }
     return (
       <div className={classes.container}>
-        <SearchForm onSubmit={this.handleSearch} />
-        <div>
-        <DropDownMenu
-          value={this.state.value}
-          onChange={this.handleChange}
-          autoWidth={false}
-          style={{width: 300}}
-        >
-          <MenuItem value={1} primaryText="All" />
-          <MenuItem value={'Books'} primaryText="Books" />
-          <MenuItem value={'Clothing'} primaryText="Clothing" />
-          <MenuItem value={'Electronics'} primaryText="Electronics" />
-          <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
-          <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
-          <MenuItem value={'Misc'} primaryText="Misc" />
-        </DropDownMenu>
+        <div className={classes.searchCategory}>
+          <SearchForm onSubmit={this.handleSearch} />
+          <DropDownMenu
+            value={this.state.value}
+            onChange={this.handleChange}
+            autoWidth={false}
+            style={{width: 200}}
+          >
+            <MenuItem value={1} primaryText="All" />
+            <MenuItem value={'Books'} primaryText="Books" />
+            <MenuItem value={'Clothing'} primaryText="Clothing" />
+            <MenuItem value={'Electronics'} primaryText="Electronics" />
+            <MenuItem value={'Home/Appliances'} primaryText="Home/Appliances" />
+            <MenuItem value={'Sports/Outdoors'} primaryText="Sports/Outdoors" />
+            <MenuItem value={'Misc'} primaryText="Misc" />
+          </DropDownMenu>
         </div>
         {
           newPostModal &&

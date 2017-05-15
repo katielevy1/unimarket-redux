@@ -4,7 +4,7 @@
   @extend .flex-column;
   justify-content: flex-start;
   align-items: flex-start;
-  height: 200px;
+  height: 350px;
   margin: .5rem;
   padding: 1.3rem;
   overflow: hidden;
@@ -24,7 +24,10 @@
 }
 .picture {
   width: auto;
-  height: 100px;
+  height: 170px;
+  transform: rotate(90deg);
+  margin-top: 40px;
+  margin-left: 20px;
 }
 .name {
   font-size: 1.5rem;

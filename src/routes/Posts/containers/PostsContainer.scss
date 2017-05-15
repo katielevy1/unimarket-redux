@@ -29,3 +29,11 @@
   padding-left: 5%;
   padding-right: 5%;
 }
+.searchCategory {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  align-items: baseline;
+  padding-bottom: 2rem;
+}
