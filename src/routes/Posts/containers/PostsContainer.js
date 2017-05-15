@@ -227,7 +227,6 @@ export default class Posts extends Component {
                    key={`${item.postkey}-Collab-${key}`}
                    post={item}
                    onCollabClick={this.collabClick}
-                   onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
                    onDelete={this.deletePost}
                  />
               ))
