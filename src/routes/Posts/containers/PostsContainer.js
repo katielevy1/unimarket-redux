@@ -134,6 +134,9 @@ export default class Posts extends Component {
       pictureFile: file
     })
   }
+  nothing = (e) => {
+    //nothing
+  }
   render () {
     const { posts } = this.props
     const { account } = this.props
@@ -229,6 +232,7 @@ export default class Posts extends Component {
                    post={item}
                    onCollabClick={this.collabClick}
                    onDelete={this.deletePost}
+                   onSelect={this.nothing}
                  />
               ))
           }
