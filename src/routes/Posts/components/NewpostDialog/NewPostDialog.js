@@ -97,31 +97,38 @@ export default class NewPostDialog extends Component {
         contentClassName={classes['container']}>
         <div className={classes['inputs']}>
           <form onSubmit={handleSubmit}>
-            <Field
-              name='title'
-              component={TextField}
-              error={error || null}
-              label='Post Title'
-            />
-            <br />
-            <Field
-              name='description'
-              component={TextField}
-              error={error || null}
-              label='Post Description'
-            />
-            <p>Choose a category</p>
-            <Field name="category" component="select">
-              <option value=""> </option>
-              {categories.map(categoryOption => (
-                <option value={categoryOption} key={categoryOption}>
-                  {categoryOption}
-                </option>
-              ))}
-            </Field>
+            <div className={classes['inputField']} >
+              <p>Choose a Title</p>
+              <Field
+                name='title'
+                component={TextField}
+                error={error || null}
+              />
+            </div>
+            <div className={classes['inputField']} >
+              <p>Choose a Description</p>
+              <Field
+                name='description'
+                component={TextField}
+                error={error || null}
+              />
+            </div>
+            <div className={classes['inputField']} >
+              <p>Choose a Category</p>
+              <Field name="category" component="select">
+                <option value=""> </option>
+                {categories.map(categoryOption => (
+                  <option value={categoryOption} key={categoryOption}>
+                    {categoryOption}
+                  </option>
+                ))}
+              </Field>
+            </div>
           </form>
-          <p>Choose a picture</p>
-          <PictureUpload submitPicture={this.submitPicture} />
+          <div className={classes['inputPicture']} >
+            <p>Choose a Picture (optional)</p>
+            <PictureUpload submitPicture={this.submitPicture} />
+          </div>
         </div>
       </Dialog>
     )

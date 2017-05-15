@@ -10,9 +10,30 @@
   input {
     width: 100%;
   }
+  form {
+    width: 100%;
+  }
 
 }
 .buttons {
   @extend .flex-column-center;
   justify-content: center;
+}
+.inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  width: 100%;
+  p {
+    margin: 10px;
+  }
+  select {
+    border: black 2px solid;
+  }
+}
+.inputPicture {
+  width: 100%;
+  p {
+    margin: 10px;
+  }
 }

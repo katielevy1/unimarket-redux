@@ -116,6 +116,27 @@ export default class Account extends Component {
         })
       }
     })
+    // Check if user has any post and display them in a list of tiles
+    let myPostsDiv = null
+    if (!isEmpty(displayPosts)) {
+      myPostsDiv = (<div className={classes['myPosts']}>
+          <h3>My Posts</h3>
+          <div className={classes.tiles}>
+            {
+              !isEmpty(displayPosts) &&
+                map(displayPosts, (item, key) => (
+                  <PostTile
+                    key={`${item.postkey}-Collab-${key}`}
+                    post={item}
+                    onCollabClick={this.collabClick}
+                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
+                    onDelete={this.deletePost}
+                  />
+                ))
+            }
+          </div>
+      </div>)
+    }
 
     return (
       <div className={classes['container']}>
@@ -142,23 +163,7 @@ export default class Account extends Component {
             <RaisedButton label='Sign Out' primary onTouchTap={this.handleLogout} />
           </ div>
         </Paper>
-        <div className={classes['myPosts']}>
-          <h3>My Posts</h3>
-          <div className={classes.tiles}>
-            {
-              !isEmpty(displayPosts) &&
-                map(displayPosts, (item, key) => (
-                  <PostTile
-                    key={`${item.postkey}-Collab-${key}`}
-                    post={item}
-                    onCollabClick={this.collabClick}
-                    onSelect={() => this.context.router.push(`${LIST_PATH}/${key}`)}
-                    onDelete={this.deletePost}
-                  />
-                ))
-            }
-          </div>
-        </div>
+        {myPostsDiv}
       </div>
     )
   }
