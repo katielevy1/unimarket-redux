@@ -13,7 +13,10 @@ import classes from './NewPostDialog.scss'
 const formName = 'newPost'
 const validate = values => {
   const errors = {}
-  if (!values.name) errors.name = 'Required'
+  if (!values.title) errors.title = 'Required'
+  if (!values.price) errors.price = 'Required'
+  if (!values.description) errors.description = 'Required'
+  if (!values.category) errors.category = 'Required'
   return errors
 }
 @reduxForm({
@@ -109,6 +112,14 @@ export default class NewPostDialog extends Component {
               <p>Choose a Description</p>
               <Field
                 name='description'
+                component={TextField}
+                error={error || null}
+              />
+            </div>
+            <div className={classes['inputField']} >
+              <p>Choose a Price</p>
+              <Field
+                name='price'
                 component={TextField}
                 error={error || null}
               />

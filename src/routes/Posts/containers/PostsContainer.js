@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { map, filter } from 'lodash'
+import { map, filter, set, update, assign, merge } from 'lodash'
 import { LIST_PATH } from 'constants/paths'
 
 // Components
@@ -66,7 +66,7 @@ export default class Posts extends Component {
 
   // Method for submitting a new post
   newSubmit = (newPost) => {
-    const { auth, account, firebase: { push, set, uniqueSet } } = this.props
+    const { auth, account, firebase: { push, uniqueSet } } = this.props
     if (auth.uid) {
       newPost.posterID = auth.uid
       newPost.schoolId = account.schoolId
@@ -77,8 +77,8 @@ export default class Posts extends Component {
     newPost.category = 'Books'
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
+    // TODO: change to true if has image
     newPost.hasImg = false
-    newPost.price = '1'
     // Create new post key
     var newPostKey = push('posts').key
     newPost.postKey = newPostKey
@@ -91,12 +91,18 @@ export default class Posts extends Component {
       })
     // Upload post image to database
     if (this.state.pictureFile) {
-      const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
-      postImagesRef.child(newPostKey + '.jpg').getDownloadURL()
-      this.props.firebase.uploadFiles('images/posts/' + newPostKey, this.state.image)
+      var pic = this.state.pictureFile
+      set(pic, 'name', newPostKey + '.jpg')
+      this.setState({
+        pictureFile: pic
+      })
+      console.log(this.state.pictureFile)
+      // const postImagesRef = this.props.firebase.storage().ref().child('images/posts/')
+      // Commented out for right now
+      // this.props.firebase.uploadFile('images/posts/', pic)
     }
     // Add post to User's list of Posts
-    set('users/' + auth.uid + '/Posts/' + newPostKey, true)
+    this.props.firebase.set('users/' + auth.uid + '/Posts/' + newPostKey, true)
   }
 
   // Delete a post
