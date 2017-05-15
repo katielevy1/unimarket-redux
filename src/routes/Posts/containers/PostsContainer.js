@@ -78,7 +78,11 @@ export default class Posts extends Component {
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
     // TODO: change to true if has image
-    newPost.hasImg = false
+    if (this.state.pictureFile) {
+      newPost.hasImg = true
+    } else {
+      newPost.hasImg = false
+    }
     // Create new post key
     var newPostKey = push('posts').key
     newPost.postKey = newPostKey
@@ -91,6 +95,10 @@ export default class Posts extends Component {
       })
     // Upload post image to database
     if (this.state.pictureFile) {
+      var picRef = this.props.firebase.storage().ref().child('images/posts/' + newPostKey + '.jpg')
+      picRef.put(this.state.pictureFile).then(function(snap) {
+        console.log('uploading')
+      })
       var pic = this.state.pictureFile
       set(pic, 'name', newPostKey + '.jpg')
       this.setState({
