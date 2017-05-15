@@ -15,6 +15,7 @@ import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import StockPhoto from 'static/noimagefound.jpg'
 
 // redux/firebase
 import { connect } from 'react-redux'
@@ -74,7 +75,6 @@ export default class Posts extends Component {
       newPost.posterID = ''
       newPost.schoolId = ''
     }
-    newPost.category = 'Books'
     newPost.flagged = 0
     newPost.time = parseInt(new Date().getTime())
     // TODO: change to true if has image
@@ -178,6 +178,10 @@ export default class Posts extends Component {
         .catch(function (e) {
           // no image not accessible for post
         })
+      } else {
+        /*console.log(StockPhoto)
+        var img = document.getElementById(post.postKey)
+        img.src = {StockPhoto}*/
       }
     })
 
